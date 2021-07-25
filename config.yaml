@@ -1,0 +1,15 @@
+namespaces:
+  trino-dev:
+    deployments:
+      trino-dev-worker:
+        minReplicas: 1
+        maxReplicas: 3
+        scaleUpBatchSize: 2
+        scaleDownBatchSize: 1
+  trino-adhoc:
+    deployments:
+      trino-adhoc-worker:
+        minReplicas: 5
+        maxReplicas: 15
+        scaleUpBatchSize: 3
+        scaleDownBatchSize: 4

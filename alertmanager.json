@@ -7,8 +7,8 @@
       "labels": {
         "alertname": "something_happened",
         "action": "scale-up",
-        "namespace": "trino-dev",
-        "deployment": "trino-dev-worker",
+        "namespace": "some-namespace",
+        "deployment": "some-deployment",
         "severity": "warning"
       },
       "annotations": {

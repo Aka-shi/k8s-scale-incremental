@@ -40,6 +40,7 @@ func AlertmanagerWebhookHandler(w http.ResponseWriter, r *http.Request) {
 		if action != "scale-up" && action != "scale-down" {
 			log.Error("Invalid action:", action)
 			http.Error(w, "Invalid value for field action in body", http.StatusBadRequest)
+			return
 		}
 
 		if config.IfNamespaceExists(namespace) && config.IfDeploymentExists(namespace, deployment) {
@@ -52,6 +53,7 @@ func AlertmanagerWebhookHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			log.Error("Namespace or deployment does not exist:", namespace, deployment)
 			http.Error(w, "Namespace or Deployment not configured", http.StatusBadRequest)
+			return
 		}
 	}
 	// Set response code to 200

@@ -22,7 +22,7 @@ type DeploymentConfig struct {
 	ScaleDownBatchSize int32 `yaml:"scaleDownBatchSize"`
 }
 
-var path = "/Users/tanmaykrishna/tanmay/trino-k8s-scaler/config.yaml"
+var path = "/app/config.yaml"
 var AppConfig *Config
 
 func LoadConfigFromFile() {

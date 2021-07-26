@@ -24,30 +24,38 @@ var kubeClient *kubernetes.Clientset
 // Initialise Kubernetes Client
 func InitKubeClient() {
 
-	var kubeconfig = flag.String("kubeconfig", filepath.Join(os.Getenv("HOME"), ".kube", "config"), "(optional) absolute path to the kubeconfig file")
-	flag.Parse()
+	var kubeconfig *rest.Config
 
-	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
-	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
-	}
-
+	// In production, we will use in-cluster config to communicate with api server. In development, we will use a kubeconfig file to connect to a local cluster.
 	if val, e := os.LookupEnv("APP_ENV"); e {
 		if val == "prod" {
-			config, err = rest.InClusterConfig()
+			config, err := rest.InClusterConfig()
 			if err != nil {
-				log.Fatal(err)
+				log.Error("Unable to load in cluster config. Shutting down")
 				os.Exit(1)
 			}
+			kubeconfig = config
+		} else {
+			log.Error("Invalid APP_ENV")
+			os.Exit(1)
 		}
+	} else {
+		var devconfig = flag.String("kubeconfig", filepath.Join(os.Getenv("HOME"), ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+		flag.Parse()
+
+		config, err := clientcmd.BuildConfigFromFlags("", *devconfig)
+		if err != nil {
+			log.Error("Unable to load kube config. Trying to load in cluster config")
+		}
+		kubeconfig = config
 	}
 
-	client, err := kubernetes.NewForConfig(config)
+	client, err := kubernetes.NewForConfig(kubeconfig)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(1)
 	}
+	log.Info("Successfully initialised kubernetes client")
 	kubeClient = client
 }
 

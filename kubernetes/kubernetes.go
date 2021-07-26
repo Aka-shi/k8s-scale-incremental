@@ -59,7 +59,7 @@ func InitKubeClient() {
 	kubeClient = client
 }
 
-// A function which takes namespace and deployment name as arguments, reads the deployment from the Kubernetes API server and set replication count to 0 and update the deployment
+// A function which takes namespace and deployment name as arguments, and scales the deployment up or down.
 func ScaleDeployment(namespace string, deploymentName string, action string) error {
 
 	var config conf.Config = *conf.AppConfig

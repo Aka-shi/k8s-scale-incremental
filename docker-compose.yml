@@ -1,0 +1,12 @@
+version: "3"
+
+services: 
+  k8s-scaler:
+    image: "tanmay76/k8s-scaler:v1"
+    container_name: k8s-scaler
+    command: ["-kubeconfig=/app/kubeconfig"]
+    ports: 
+      - "8000:8000"
+    volumes:
+      # replace home with absolute path to your homeg
+      - "$HOME/.kube/config:/app/kubeconfig"

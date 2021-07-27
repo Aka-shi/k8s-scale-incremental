@@ -20,6 +20,12 @@ Please refer to the sample config for reference.
 
 This is a stateless application and can be deployed as a K8s deployment in the cluster. Please make sure the service account attached to this deployment has sufficient access to trigger scale for the deployments mentioned in the config.yaml
 
+To run this locally, set the path to your kubeconfig in [docker-compose.yml](./docker-compose.yml) and run 
+```
+docker-compose up
+```
+You can trigger scale-up/scale-down by submitting a `POST` request to `localhost:8000/scale` with the sample [request body](./alertmanager.json)(set appropriate namespace and deployment names)
+
 ## Integrations
 
 As of now, this is used to trigger scale based on alerts from alertmanager only. Please raise an issue/PR if you wish to add your own integrations.
